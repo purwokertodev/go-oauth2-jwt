@@ -1,4 +1,4 @@
-OAUTH2 example with GO, Negroni, JWT-go and gorilla
+OAUTH2 example with GO, JWT-go and gorilla
 
 before get started, you have to know :
 

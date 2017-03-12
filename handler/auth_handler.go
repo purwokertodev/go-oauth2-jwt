@@ -5,22 +5,16 @@ import(
 	"log"
 	"net/http"
 	"strings"
-	"time"
 	"crypto/rsa"
 
-	"github.com/dgrijalva/jwt-go"
-	
 	"github.com/wuriyanto48/go-oauth2-jwt/response"
+	"github.com/wuriyanto48/go-oauth2-jwt/token"
 	
 )
 
 type UserLogin struct{
 	Username string `json:"username"`
 	Password string `json:"password"`
-}
-
-type AccessToken struct{
-	AccessToken string `json:"access_token"`
 }
 
 func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *http.Request){
@@ -41,28 +35,17 @@ func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *
 						log.Fatal(err)
 						return
 					}
-					if strings.ToLower(userLogin.Username) != "wuriyanto"{
-						if userLogin.Password != "123456"{
-							response.MessageWithJson(res, "Username or Password invalid", http.StatusUnauthorized)
-							return
-						}
+					if strings.ToLower(userLogin.Username) != "wuriyanto" || userLogin.Password != "123456"{
+						response.MessageWithJson(res, "Username or Password invalid", http.StatusUnauthorized)
+						return
 					} else {
-						token := jwt.New(jwt.SigningMethodRS256)
-						claims := make(jwt.MapClaims)
-						claims["iss"] = "auth.wury.com"
-						claims["aud"] = "wury.com"
-						claims["exp"] = time.Now().Add(time.Minute * 10).Unix()
-						claims["sub"] = "001"
-						token.Claims = claims
-						
-						tokenString, err := token.SignedString(signKey)
+						tokenResult, err := token.GenerateToken(signKey, token.Claim{"auth.wury.com", "wury.com", "001"})
 						if err != nil {
-							response.MessageWithJson(res, "Can't get access token", http.StatusInternalServerError)
-							log.Fatal(err)
+							response.MessageWithJson(res, "Cant get token", http.StatusInternalServerError)
+							log.Println(err)
 							return
 						}
-						
-						response.JsonResponse(res, AccessToken{tokenString}, http.StatusOK)
+						response.JsonResponse(res, tokenResult, http.StatusOK)
 					}
 					
 					

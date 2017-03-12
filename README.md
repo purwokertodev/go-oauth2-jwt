@@ -12,3 +12,8 @@ try it with curl:
 ```language:shell
 curl localhost:3000/token?grant_type=password -X POST -d "{"username": "wuriyanto", "password": "123456"}'
 ```
+
+if you using windows:
+```language:shell
+curl localhost:3000/token?grant_type=password -X POST -d "{\"username\": \"wuriyanto\", \"password\": \"123456\"}'
+```

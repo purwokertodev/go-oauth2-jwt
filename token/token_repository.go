@@ -31,5 +31,5 @@ func GenerateToken(signKey *rsa.PrivateKey, cl Claim)(interface{}, error){
 	if err != nil {
 		return nil, err
 	}
-	return accessToken{tokenString}, err
+	return accessToken{tokenString}, nil
 }

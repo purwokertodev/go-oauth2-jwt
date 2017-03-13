@@ -1,32 +1,32 @@
 package main
 
-import(
-	"log"
-	"net/http"
+import (
 	"crypto/rsa"
 	"io/ioutil"
-	
+	"log"
+	"net/http"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/wuriyanto48/go-oauth2-jwt/handler"
 )
 
-const(
+const (
 	privateKeyPath = "app.rsa"
-	publicKeyPath = "app.rsa.pub"
+	publicKeyPath  = "app.rsa.pub"
 )
 
-var(
+var (
 	verifyKey *rsa.PublicKey
-	signKey *rsa.PrivateKey
+	signKey   *rsa.PrivateKey
 )
 
-func main(){
+func main() {
 	initKeys()
 	server()
 }
 
-func initKeys(){
+func initKeys() {
 	signBytes, err := ioutil.ReadFile(privateKeyPath)
 	printError(err)
 
@@ -40,13 +40,13 @@ func initKeys(){
 	printError(err)
 }
 
-func printError(err error){
+func printError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func server(){
+func server() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", handler.Index).Methods("GET")
 	router.HandleFunc("/token", handler.GetAccessToken(signKey)).Methods("POST")

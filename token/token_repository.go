@@ -1,23 +1,23 @@
 package token
 
-import(
-	"time"
+import (
 	"crypto/rsa"
-	
+	"time"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
-type Claim struct{
-	Issuer string
+type Claim struct {
+	Issuer   string
 	Audience string
-	Subject string
+	Subject  string
 }
 
-type accessToken struct{
+type accessToken struct {
 	AccessToken string `json:"access_token"`
 }
 
-func GenerateToken(signKey *rsa.PrivateKey, cl Claim)(interface{}, error){
+func GenerateToken(signKey *rsa.PrivateKey, cl Claim) (interface{}, error) {
 	token := jwt.New(jwt.SigningMethodRS256)
 	claims := make(jwt.MapClaims)
 	claims["iss"] = cl.Issuer
@@ -26,7 +26,7 @@ func GenerateToken(signKey *rsa.PrivateKey, cl Claim)(interface{}, error){
 	claims["iat"] = time.Now().Unix()
 	claims["sub"] = cl.Subject
 	token.Claims = claims
-	
+
 	tokenString, err := token.SignedString(signKey)
 	if err != nil {
 		return nil, err

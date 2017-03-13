@@ -4,30 +4,26 @@ import(
 	"encoding/json"
 	"log"
 	"net/http"
-	"strings"
 	"crypto/rsa"
 
 	"github.com/wuriyanto48/go-json-message/response"
 	"github.com/wuriyanto48/go-oauth2-jwt/token"
-	
+	"github.com/wuriyanto48/go-oauth2-jwt/login"
+
 )
 
-type UserLogin struct{
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
 
 func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *http.Request){
-		
+
 		return func(res http.ResponseWriter, req *http.Request){
-			
+
 			queries := req.URL.Query()
 			query, _ := queries["grant_type"]
 			grantType := query[0]
-			
+
 			switch(grantType){
 				case "password":
-					var userLogin UserLogin
+					var userLogin login.UserLogin
 					decoder := json.NewDecoder(req.Body)
 					err := decoder.Decode(&userLogin)
 					if err != nil {
@@ -35,7 +31,7 @@ func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *
 						log.Fatal(err)
 						return
 					}
-					if strings.ToLower(userLogin.Username) != "wuriyanto" || userLogin.Password != "123456"{
+					if !userLogin.IsValidUser(){
 						response.MessageWithJson(res, "Username or Password invalid", http.StatusUnauthorized)
 						return
 					} else {
@@ -47,15 +43,11 @@ func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *
 						}
 						response.JsonResponse(res, tokenResult, http.StatusOK)
 					}
-					
-					
+
+
 				default:
 					response.MessageWithJson(res, "Invalid grant type", http.StatusNotFound)
 					return
 			}
 		}
 }
-
-
-
-

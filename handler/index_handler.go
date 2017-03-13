@@ -2,7 +2,7 @@ package handler
 
 import(
 	"net/http"
-	"github.com/wuriyanto48/go-oauth2-jwt/response"
+	"github.com/wuriyanto48/go-json-message/response"
 )
 
 func Index(res http.ResponseWriter, req *http.Request){

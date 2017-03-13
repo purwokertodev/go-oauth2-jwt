@@ -7,7 +7,7 @@ import(
 	"strings"
 	"crypto/rsa"
 
-	"github.com/wuriyanto48/go-oauth2-jwt/response"
+	"github.com/wuriyanto48/go-json-message/response"
 	"github.com/wuriyanto48/go-oauth2-jwt/token"
 	
 )

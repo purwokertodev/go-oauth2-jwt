@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	privateKeyPath = "app.rsa"
-	publicKeyPath  = "app.rsa.pub"
+	privateKeyPath = "secret/app.rsa"
+	publicKeyPath  = "secret/app.rsa.pub"
 )
 
 var (

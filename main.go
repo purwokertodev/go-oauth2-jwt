@@ -55,9 +55,10 @@ func server() {
 		fmt.Println("Cannot get config ", err)
 	}
 	port := strconv.Itoa(conv.Dev.Port)
-	fmt.Println("app running on port :"+port)
+	host := conv.Dev.Host
+	fmt.Println("app running on "+host+":"+port)
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", handler.Index).Methods("GET")
 	router.HandleFunc("/token", handler.GetAccessToken(signKey)).Methods("POST")
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	log.Fatal(http.ListenAndServe(host+":"+port, router))
 }

@@ -4,12 +4,19 @@ import(
   "github.com/spf13/viper"
 )
 
-type Development struct{
+type Development struct {
+  Host string
   Port int
 }
 
-type AppConfig struct{
+type Production struct {
+  Host string
+  Port int
+}
+
+type AppConfig struct {
     Dev Development
+    Prod Production
 }
 
 func GetConfig() (*AppConfig, error){

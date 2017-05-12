@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"strconv"
 	"crypto/rsa"
 	"io/ioutil"
 	"log"
@@ -9,6 +11,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"github.com/wuriyanto48/go-oauth2-jwt/handler"
+	"github.com/wuriyanto48/go-oauth2-jwt/config"
 )
 
 const (
@@ -47,8 +50,14 @@ func printError(err error) {
 }
 
 func server() {
+	conv, err := config.GetConfig()
+	if err != nil {
+		fmt.Println("Cannot get config ", err)
+	}
+	port := strconv.Itoa(conv.Dev.Port)
+	fmt.Println("app running on port :"+port)
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", handler.Index).Methods("GET")
 	router.HandleFunc("/token", handler.GetAccessToken(signKey)).Methods("POST")
-	log.Fatal(http.ListenAndServe(":3000", router))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }

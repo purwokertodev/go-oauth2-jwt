@@ -1,7 +1,6 @@
-package main
+package config
 
 import(
-  "fmt"
   "github.com/spf13/viper"
 )
 
@@ -15,7 +14,7 @@ type AppConfig struct{
 
 func GetConfig() (*AppConfig, error){
   viper.SetConfigName("app_config")
-  viper.AddConfigPath(".")
+  viper.AddConfigPath("./")
   if err := viper.ReadInConfig(); err != nil {
     return nil, err
   }
@@ -24,10 +23,4 @@ func GetConfig() (*AppConfig, error){
     return nil, err
   }
   return ac, nil
-}
-
-func main(){
-  ac, err := GetConfig()
-  fmt.Println(err)
-  fmt.Println(ac)
 }

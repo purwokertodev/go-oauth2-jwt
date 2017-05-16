@@ -17,3 +17,13 @@ if you using windows:
 ```language:shell
 curl localhost:3000/token?grant_type=password -X POST -d "{\"username\": \"wuriyanto\", \"password\": \"123456\"}'
 ```
+
+# To Do
+- [x] Password Grant Type
+- [ ] Add Client Credentials Grant
+- [ ] Add new Code
+- [ ] Writing test
+
+
+
+***Copyright 2017 Wuriyanto Musobar***

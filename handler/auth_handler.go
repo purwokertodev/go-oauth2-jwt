@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/wuriyanto48/go-json-message/response"
 	"github.com/wuriyanto48/go-oauth2-jwt/login"
@@ -33,13 +34,17 @@ func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *
 				response.MessageWithJson(res, "Username or Password invalid", http.StatusUnauthorized)
 				return
 			} else {
-				tokenResult, err := token.GenerateToken(signKey, token.Claim{"auth.wury.com", "wury.com", "001"})
+				tokenExpired, err := time.ParseDuration("10m")
 				if err != nil {
+					panic("cant parse time duration")
+				}
+				claim := token.NewClaim("auth.wury.com", "wury.com", "001", tokenExpired)
+				tokenResult := <-claim.GenerateToken(signKey)
+				if tokenResult.Error != nil {
 					response.MessageWithJson(res, "Cant get token", http.StatusInternalServerError)
-					log.Println(err)
 					return
 				}
-				response.JsonResponse(res, tokenResult, http.StatusOK)
+				response.JsonResponse(res, tokenResult.AccessToken, http.StatusOK)
 			}
 
 		default:

@@ -4,7 +4,6 @@ import:
   version: v3.0.0
 - package: github.com/gorilla/mux
   version: v1.4.0
-- package: github.com/spf13/viper
 - package: github.com/wuriyanto48/go-json-message
   subpackages:
   - response

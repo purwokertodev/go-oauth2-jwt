@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"crypto/rsa"
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"net/http"
+	"os"
 	"path/filepath"
-	"flag"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
-	"github.com/wuriyanto48/go-oauth2-jwt/handler"
 	"github.com/wuriyanto48/go-oauth2-jwt/config"
+	"github.com/wuriyanto48/go-oauth2-jwt/handler"
 )
 
 const (
@@ -63,7 +63,7 @@ func server() {
 	}
 
 	host := os.Getenv("HOST")
-	fmt.Println("app running on "+host)
+	fmt.Println("app running on " + host)
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", handler.Index).Methods("GET")
 	router.HandleFunc("/token", handler.GetAccessToken(signKey)).Methods("POST")

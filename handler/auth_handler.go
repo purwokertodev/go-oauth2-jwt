@@ -3,9 +3,9 @@ package handler
 import (
 	"crypto/rsa"
 	"encoding/json"
-	"os"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/wuriyanto48/go-json-message/response"

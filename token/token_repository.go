@@ -1,10 +1,10 @@
 package token
 
 import (
-	"fmt"
 	"crypto/rsa"
-	"time"
+	"fmt"
 	"sync"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -13,17 +13,17 @@ type Claim struct {
 	Issuer   string
 	Audience string
 	Subject  string
-	Expired time.Duration
-	Lock *sync.RWMutex
+	Expired  time.Duration
+	Lock     *sync.RWMutex
 }
 
 func NewClaim(issuer string, audience string, subject string, expired time.Duration) *Claim {
 	return &Claim{
-		Issuer: issuer,
+		Issuer:   issuer,
 		Audience: audience,
-		Subject: subject,
-		Expired: expired,
-		Lock: new(sync.RWMutex),
+		Subject:  subject,
+		Expired:  expired,
+		Lock:     new(sync.RWMutex),
 	}
 }
 
@@ -32,13 +32,13 @@ type AccessToken struct {
 }
 
 type AccessTokenResponse struct {
-	Error error
+	Error       error
 	AccessToken *AccessToken
 }
 
 func (cl *Claim) GenerateToken(signKey *rsa.PrivateKey) <-chan AccessTokenResponse {
 	result := make(chan AccessTokenResponse)
-	go func(){
+	go func() {
 		cl.Lock.Lock()
 		defer cl.Lock.Unlock()
 		token := jwt.New(jwt.SigningMethodRS256)

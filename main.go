@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"crypto/rsa"
 	"io/ioutil"
 	"log"
+	"os"
 	"net/http"
+	"path/filepath"
+	"flag"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
@@ -50,15 +52,20 @@ func printError(err error) {
 }
 
 func server() {
-	conv, err := config.GetConfig()
+	currentDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		fmt.Println("Cannot get config ", err)
+		panic(err)
 	}
-	port := strconv.Itoa(conv.Dev.Port)
-	host := conv.Dev.Host
-	fmt.Println("app running on "+host+":"+port)
+	configDir := flag.String("config_dir", currentDir, "find your configuration file location")
+
+	if err := config.InitConfig(*configDir); err != nil {
+		panic(err)
+	}
+
+	host := os.Getenv("HOST")
+	fmt.Println("app running on "+host)
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", handler.Index).Methods("GET")
 	router.HandleFunc("/token", handler.GetAccessToken(signKey)).Methods("POST")
-	log.Fatal(http.ListenAndServe(host+":"+port, router))
+	log.Fatal(http.ListenAndServe(host, router))
 }

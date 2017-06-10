@@ -1,0 +1,18 @@
+hash: a6749bf7b918f966ae40b5cf85d3edbb328322b4027d2ff688958b53de8e4f99
+updated: 2017-06-11T00:36:00.541668654+07:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: bcd8bc72b08df0f70df986b97f95590779502d31
+- name: github.com/joho/godotenv
+  version: 726cc8b906e3d31c70a9671c90a13716a8d3f50d
+- name: github.com/spf13/viper
+  version: 0967fc9aceab2ce9da34061253ac10fb99bba5b2
+- name: github.com/wuriyanto48/go-json-message
+  version: c71b1695450a6b7b200678ebaeb32be325bd10dd
+  subpackages:
+  - response
+testImports: []

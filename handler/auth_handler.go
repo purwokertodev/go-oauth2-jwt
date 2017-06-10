@@ -3,6 +3,7 @@ package handler
 import (
 	"crypto/rsa"
 	"encoding/json"
+	"os"
 	"log"
 	"net/http"
 	"time"
@@ -34,7 +35,7 @@ func GetAccessToken(signKey *rsa.PrivateKey) func(res http.ResponseWriter, req *
 				response.MessageWithJson(res, "Username or Password invalid", http.StatusUnauthorized)
 				return
 			} else {
-				tokenExpired, err := time.ParseDuration("10m")
+				tokenExpired, err := time.ParseDuration(os.Getenv("TOKEN_EXPIRED_MINUTES"))
 				if err != nil {
 					panic("cant parse time duration")
 				}

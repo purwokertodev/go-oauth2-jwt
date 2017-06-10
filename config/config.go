@@ -1,33 +1,24 @@
 package config
 
-import(
-  "github.com/spf13/viper"
+import (
+	"fmt"
+	env "github.com/joho/godotenv"
+	"os"
+	"strings"
 )
 
-type Development struct {
-  Host string
-  Port int
-}
+func InitConfig(configPath string) error {
+	if strings.TrimSpace(configPath) == "" {
+		return fmt.Errorf("%s: %s", "Error", "cannot find config path")
+		os.Exit(1)
+	}
+	configPath = strings.TrimRight(configPath, "/")
 
-type Production struct {
-  Host string
-  Port int
-}
+	err := env.Load()
+	if err != nil {
+		return fmt.Errorf("%s: %s", "Error", err.Error())
+	}
 
-type AppConfig struct {
-    Dev Development
-    Prod Production
-}
-
-func GetConfig() (*AppConfig, error){
-  viper.SetConfigName("app_config")
-  viper.AddConfigPath("./")
-  if err := viper.ReadInConfig(); err != nil {
-    return nil, err
-  }
-  var ac *AppConfig
-  if err := viper.Unmarshal(&ac); err != nil {
-    return nil, err
-  }
-  return ac, nil
+	os.Setenv("DIR", configPath)
+	return nil
 }

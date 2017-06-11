@@ -40,6 +40,7 @@ func (cl *Claim) GenerateToken(signKey *rsa.PrivateKey) <-chan AccessTokenRespon
 	result := make(chan AccessTokenResponse)
 	go func() {
 		cl.Lock.Lock()
+		defer close(result)
 		defer cl.Lock.Unlock()
 		token := jwt.New(jwt.SigningMethodRS256)
 		claims := make(jwt.MapClaims)
@@ -55,7 +56,6 @@ func (cl *Claim) GenerateToken(signKey *rsa.PrivateKey) <-chan AccessTokenRespon
 			result <- AccessTokenResponse{Error: err, AccessToken: nil}
 		}
 		result <- AccessTokenResponse{Error: nil, AccessToken: &AccessToken{fmt.Sprintf("Bearer %v", tokenString)}}
-		close(result)
 	}()
 	return result
 }

@@ -1,0 +1,13 @@
+language: go
+go:
+ - 1.7.x
+ - master
+cache:
+ directories:
+  - vendor
+install:
+ - go get github.com/Masterminds/glide
+
+script:
+ - glide install
+ - go test -v $(glide novendor)

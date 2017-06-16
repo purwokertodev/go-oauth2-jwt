@@ -1,5 +1,7 @@
 OAUTH2 example with GO, JWT-go and gorilla
 
+[![Build Status](https://travis-ci.org/wuriyanto48/go-oauth2-jwt.svg?branch=master)](https://travis-ci.org/wuriyanto48/go-oauth2-jwt)
+
 before get started, you have to know :
 
 - https://golang.org/doc/code.html

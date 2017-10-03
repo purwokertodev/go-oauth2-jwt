@@ -54,6 +54,7 @@ func (cl *Claim) GenerateToken(signKey *rsa.PrivateKey) <-chan AccessTokenRespon
 		tokenString, err := token.SignedString(signKey)
 		if err != nil {
 			result <- AccessTokenResponse{Error: err, AccessToken: nil}
+			return
 		}
 		result <- AccessTokenResponse{Error: nil, AccessToken: &AccessToken{fmt.Sprintf("Bearer %v", tokenString)}}
 	}()
